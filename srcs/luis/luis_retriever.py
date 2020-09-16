@@ -11,8 +11,8 @@ PREDICTION_KEY = os.getenv("PREDICTION_KEY")
 PREDICTION_ENDPOINT = os.getenv("PREDICTION_ENDPOINT")
 
 class LUISRetriever():
-	"""
-	A class used to communicate with LUIS
+    """
+    A class used to communicate with LUIS
 
     ...
 
@@ -27,40 +27,40 @@ class LUISRetriever():
         Call LUIS with the stored sentence
     """
 
-	def __init__(self, sentence):
-		self.sentence = sentence
+    def __init__(self, sentence):
+        self.sentence = sentence
 
-	
-	def call(self):
-		"""
-		Used to call LUIS with the stored sentence.
+    
+    def call(self):
+        """
+        Used to call LUIS with the stored sentence.
 
-		Returns:
-			data: the json response of the LUIS API (returns None if an error occured)
-		"""
+        Returns:
+            data: the json response of the LUIS API (returns None if an error occured)
+        """
 
-		data = None
+        data = None
 
-		try:
-			params = {
-				'query': self.sentence,
-				'timezoneOffset': '0',
-				'verbose': 'true',
-				'show-all-intents': 'true',
-				'spellCheck': 'false',
-				'staging': 'false',
-				'subscription-key': PREDICTION_KEY
-    		}
+        try:
+            params = {
+                'query': self.sentence,
+                'timezoneOffset': '0',
+                'verbose': 'true',
+                'show-all-intents': 'true',
+                'spellCheck': 'false',
+                'staging': 'false',
+                'subscription-key': PREDICTION_KEY
+            }
 
-			response = requests.get(f'{PREDICTION_ENDPOINT}luis/prediction/v3.0/apps/{APP_ID}/slots/production/predict', headers={}, params=params)
+            response = requests.get(f'{PREDICTION_ENDPOINT}luis/prediction/v3.0/apps/{APP_ID}/slots/production/predict', headers={}, params=params)
 
-			if response.status_code != 200:
-				raise Exception('Bad status code received: {}'.format(response.status_code))
+            if response.status_code != 200:
+                raise Exception('Bad status code received: {}'.format(response.status_code))
 
-			data = response.json()
-		except Exception as e:
-			print("Something gone wrong while calling LUISRetriever#call():")
-			print(e)
-		
-		return data
+            data = response.json()
+        except Exception as e:
+            print("Something gone wrong while calling LUISRetriever#call():")
+            print(e)
+        
+        return data
 
